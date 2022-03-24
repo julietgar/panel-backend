@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('metrics', function (Blueprint $table) {
             $table->id();
+            $table->integer('machine_id')->unsigned();
             $table->string('device_id');
             $table->json('data');
             $table->timestamp('date_from');
             $table->timestamp('date_to');
             $table->timestamp('created_at');
+
+            $table->foreign('machine_id')->references('id')->on('machines');
         });
     }
 
