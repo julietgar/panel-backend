@@ -9,8 +9,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Spatie\SimpleExcel\SimpleExcelReader;
-use App\Models\Metric;
-use App\Models\Machine;
 use App\Services\Pump;
 
 class PumpProcess implements ShouldQueue
@@ -31,24 +29,16 @@ class PumpProcess implements ShouldQueue
             ->skip(Pump::getTotalMetricRows()) // skip the total quantity rows that we already have in the table
             ->take(1) // take the last row that has not been processed
             ->each(function(array $row) {
-                $machineData = Pump::getMachineData('pump');
                 $machineSettings = Pump::getMachineSettings('pump');
-
                 $metricsAsArray = json_decode($row['metrics'], true);
-                $psumAvgValue = $metricsAsArray['Psum']['avgvalue'];
-                $psumAvgValuePercentage = Pump::getPsumAvgValuePercentage($psumAvgValue, $machineSettings['psum_max_value']);
+                $psumAvgValuePercentage = Pump::getPsumAvgValuePercentage($metricsAsArray['Psum']['avgvalue'], $machineSettings['psum_max_value']);
 
-                $state = Pump::getState($psumAvgValue, $machineSettings['psum_min_value'], $psumAvgValuePercentage);
-
-                Metric::create([
-                    'machine_id' => $machineData->id,
-                    'device_id' => $row['deviceid'],
-                    'state' => $state,
-                    'data' => $row['metrics'],
-                    'date_from' => $row['fromts'],
-                    'date_to' => $row['tots'],
-                    'created_at' => now(),
-                ]);
+                Pump::createMetric(
+                    Pump::getMachineData('pump')->id, 
+                    Pump::getState($metricsAsArray['Psum']['avgvalue'], $machineSettings['psum_min_value'], $psumAvgValuePercentage),
+                    $psumAvgValuePercentage,
+                    $row
+                );
             });
     }
 }
