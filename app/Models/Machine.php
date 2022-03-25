@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\MachineSetting;
 
 class Machine extends Model
 {
@@ -15,4 +16,12 @@ class Machine extends Model
         'slug',
         'created_at',
     ];
+
+    /**
+     * Get the setting associated with the machine.
+     */
+    public function setting()
+    {
+        return $this->hasOne(MachineSetting::class);
+    }
 }

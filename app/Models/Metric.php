@@ -18,6 +18,7 @@ class Metric extends Model
     protected $fillable = [
         'machine_id',
         'device_id',
+        'state',
         'data',
         'date_from',
         'date_to',

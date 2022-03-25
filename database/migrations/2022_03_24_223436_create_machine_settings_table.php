@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('metrics', function (Blueprint $table) {
-            $table->id();
+        Schema::create('machine_settings', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('machine_id')->unsigned();
-            $table->string('device_id');
-            $table->string('state');
-            $table->json('data');
-            $table->bigInteger('date_from');
-            $table->bigInteger('date_to');
+            $table->float('psum_min_value');
+            $table->float('psum_max_value');
             $table->timestamp('created_at');
 
             $table->foreign('machine_id')->references('id')->on('machines');
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('metrics');
+        Schema::dropIfExists('machine_settings');
     }
 };
