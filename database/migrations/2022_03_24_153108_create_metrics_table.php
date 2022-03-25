@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('machine_id')->unsigned();
             $table->string('device_id');
             $table->string('state');
+            $table->float('psum_avg_percentage');
             $table->json('data');
             $table->bigInteger('date_from');
             $table->bigInteger('date_to');

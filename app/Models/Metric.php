@@ -19,6 +19,7 @@ class Metric extends Model
         'machine_id',
         'device_id',
         'state',
+        'psum_avg_percentage',
         'data',
         'date_from',
         'date_to',

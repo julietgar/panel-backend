@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\MachineSetting;
+use App\Models\Metric;
 
 class Machine extends Model
 {
@@ -23,5 +24,13 @@ class Machine extends Model
     public function setting()
     {
         return $this->hasOne(MachineSetting::class);
+    }
+
+     /**
+     * Get the metrics associated with the machine.
+     */
+    public function metrics()
+    {
+        return $this->hasMany(Metric::class);
     }
 }
