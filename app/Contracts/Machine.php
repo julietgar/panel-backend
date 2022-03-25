@@ -49,4 +49,36 @@ interface Machine
      * @return string
      */
     public static function getState(float $psumAvgValue, float $psumMinValue, float $psumAvgValuePercentage): string;
+
+    /**
+     * Get last state.
+     * 
+     * @param  \Illuminate\Database\Eloquent\Collection $metrics
+     *
+     * @return string
+     */
+    public static function getLastState(\Illuminate\Database\Eloquent\Collection $metrics): string;
+
+    /**
+     * Insert metric machine.
+     * 
+     * @param  int $machineId
+     * @param  string $state
+     * @param  float $psumAvgValuePercentage
+     * @param  array $metricData
+     *
+     * @return void
+     */
+    public static function createMetric(int $machineId, string $state, float $psumAvgValuePercentage, array $metricData): void;
+
+    /**
+     * Get the metric data.
+     * 
+     * @param  string $machineSlug
+     * @param  int $quantityRows
+     * @param  \Illuminate\Database\Eloquent\Relations\HasMany $metricData
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getMetricData(string $machineSlug, int $quantityRows = 5, \Illuminate\Database\Eloquent\Relations\HasMany $metricData = null): \Illuminate\Database\Eloquent\Collection;
 }
