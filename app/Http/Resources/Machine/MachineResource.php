@@ -23,6 +23,7 @@ class MachineResource extends JsonResource
         return [
             'machine_name' => $this->name,
             'last_state' => $lastState,
+            'total_rows' => $this->metrics()->count(),
             'metrics' => new MetricCollection($metricData),
         ];
     }
