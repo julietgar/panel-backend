@@ -52,9 +52,9 @@ class Pump implements MachineContract
         return $state;
     }
 
-    public static function getLastState(Collection $metrics): string
+    public static function getLastState(Collection $metrics): string|null
     {
-        return $metrics->first()['state'];
+        return $metrics->first()['state'] ?? null;
     }
 
     public static function createMetric(int $machineId, string $state, float $psumAvgValuePercentage, array $metricData): void

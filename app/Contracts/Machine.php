@@ -57,7 +57,7 @@ interface Machine
      *
      * @return string
      */
-    public static function getLastState(\Illuminate\Database\Eloquent\Collection $metrics): string;
+    public static function getLastState(\Illuminate\Database\Eloquent\Collection $metrics): string|null;
 
     /**
      * Insert metric machine.
