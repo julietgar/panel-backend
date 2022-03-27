@@ -22,7 +22,7 @@ class PumpProcess implements ShouldQueue
      */
     public function handle()
     {
-        $pathToCsv = storage_path('app/public/demoPumpDayDataOff.csv');
+        $pathToCsv = public_path('demoPumpDayDataOff.csv');
 
         SimpleExcelReader::create($pathToCsv)->getRows()
             ->sortBy('fromts') // Sort Asc
