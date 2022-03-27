@@ -8,8 +8,6 @@ Please, follow the insctructions that are detailed below:
 Clone the project in your local enviroment. Run the following commands to do it:
 `git clone https://github.com/julietgar/panel-backend.git`
 
-Take into account that the **last changes** made are on the `dev` branch. Change your branch to `dev`.
-
 **Now, please, make sure to run the next commands in the root of your project.**
 
 ### Create an environment file
