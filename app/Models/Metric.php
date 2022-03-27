@@ -7,11 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Metric extends Model
 {
     /**
+     * Prevent to insert in the `update_at` column automatically
+     */
+    public $timestamps = false;
+    
+    /**
      * The attributes that are mass assignable.
      *
      */
     protected $fillable = [
+        'machine_id',
         'device_id',
+        'state',
+        'psum_avg_percentage',
         'data',
         'date_from',
         'date_to',
