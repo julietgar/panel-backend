@@ -66,5 +66,5 @@ You can run the tests with the following command:
 `./vendor/bin/sail php artisan test`
 
 ### Follow the instructions to use panel-frontend here:
-https://github.com/julietgar/panel-frontend/blob/dev/README.md
+https://github.com/julietgar/panel-frontend/blob/main/README.md
 
