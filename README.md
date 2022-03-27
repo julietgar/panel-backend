@@ -1,64 +1,72 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Panel - Backend
+This project is made on PHP 8 with Laravel 9 PHP Framework.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Please, follow the insctructions that are detailed below:
 
-## About Laravel
+### Clone the project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Clone the project in your local enviroment. Run the following commands to do it:
+`git clone https://github.com/julietgar/panel-backend.git`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Take into account that the **last changes** made are on the `dev` branch. Change your branch to `dev`.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Now, please, make sure to run the next commands in the root of your project.**
 
-## Learning Laravel
+### Create an environment file
+`cp .env.example .env`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Install packages
+Before to run this, make sure you have installed [Composer](https://getcomposer.org/) in your system.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+`composer install`
 
-## Laravel Sponsors
+### Initialize the project
+Run the following command to initialize the project with [Docker Desktop](https://www.docker.com/products/docker-desktop/):
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+`./vendor/bin/sail up`
 
-### Premium Partners
+The first time you run the Sail up command, Sail's application containers will be built on your machine. This could take several minutes.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+##### Generate an app key
+When previous process is completed, please, open another terminal tab and run this:
+`./vendor/bin/sail php artisan key:generate`
 
-## Contributing
+Once the application's Docker containers have been started, you can check if the application is on accessing in your web browser: http://localhost.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Create tables:
+Run this command to create the tables required in the database:
+    `./vendor/bin/sail php artisan migrate --seed`
 
-## Code of Conduct
+This command is going to create some table and insert some predifine data for the `machine` and `machine_settings` tables.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### How to use it?
+There is a job created to take the data from the Pump CSV file and insert them in the database.
 
-## Security Vulnerabilities
+We have to run the following commands to be sure that the flow can work properly:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Run Horizon:
+`./vendor/bin/sail php artisan horizon`
 
-## License
+   Horizon can help you to manage and handle the queues in the server.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Dispatch the `PumpProcess` job:
+   In another tab, run this command:
+`./vendor/bin/sail php artisan tinker --execute "Bus::dispatch(new App\Jobs\PumpProcess());"`
+
+   This is the job necessary to insert data in the database.
+
+- Run the job scheduled automatically (optional):
+   In another tab, run this command:
+`./vendor/bin/sail php artisan schedule:work`
+
+   This command will run in the foreground and invoke the scheduler every minute until. 
+The `PumpProcess` job has been scheduled to be run every minute. If you would like to try it, you can use this command and wait every minute. You do not have to dispatch the `PumpProcess` job manually.
+
+### Run the tests
+
+You can run the tests with the following command:
+`./vendor/bin/sail php artisan test`
+
+### Follow the instructions to use panel-frontend here:
+https://github.com/julietgar/panel-frontend/blob/dev/README.md
+
